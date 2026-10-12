@@ -1,0 +1,2 @@
+# Skrypty muszą mieć końce linii LF, także po sklonowaniu na Windows (Git Bash)
+*.sh text eol=lf

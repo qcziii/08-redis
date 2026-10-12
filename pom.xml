@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Agregat: `mvn package -DskipTests` buduje aplikacje wszystkich scenariuszy naraz. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>pl.kurs</groupId>
+    <artifactId>redis-exercises</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>scenarios/01-host-z-dockera</module>
+        <module>scenarios/02-stary-prefiks-wlasciwosci</module>
+        <module>scenarios/03-serializacja-cache</module>
+        <module>scenarios/04-cache-nie-dziala</module>
+        <module>scenarios/05-ttl-cache</module>
+        <module>scenarios/06-stara-cena</module>
+        <module>scenarios/07-drugie-zadanie-500</module>
+        <module>scenarios/08-klucze-nieczytelne</module>
+        <module>scenarios/09-kody-nie-wygasaja</module>
+        <module>scenarios/10-licznik-gubi-wyswietlenia</module>
+        <module>scenarios/11-powiadomienia-pubsub</module>
+        <module>scenarios/12-wyszukiwanie-koszykow</module>
+        <module>scenarios/13-redis-zamiera</module>
+        <module>scenarios/14-redis-padl</module>
+    </modules>
+</project>

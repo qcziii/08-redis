@@ -1,0 +1,10 @@
+# Redis do ćwiczeń: localhost:6379, hasło "kurs".
+# Start: docker compose up -d   (albo ./scripts/start-redis.sh)
+name: kurs-redis
+services:
+  redis:
+    image: redis:7.4-alpine
+    container_name: kurs-redis
+    command: ["redis-server", "--requirepass", "kurs", "--save", "", "--appendonly", "no"]
+    ports:
+      - "6379:6379"

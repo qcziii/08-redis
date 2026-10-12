@@ -1,0 +1,15 @@
+# Materiały prowadzącego: rozwiązania, patche, przewodnik. Nie publikować!
+rozwiazania/
+
+# Build i logi
+target/
+logs/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+.DS_Store

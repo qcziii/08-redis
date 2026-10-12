@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: sklep
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: kurs
+  cache:
+    type: redis
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,caches,configprops,env
+  endpoint:
+    health:
+      show-details: always
+    configprops:
+      show-values: always
+    env:
+      show-values: always
