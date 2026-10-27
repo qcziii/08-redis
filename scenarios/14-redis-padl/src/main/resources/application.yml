@@ -3,6 +3,7 @@ spring:
     name: sklep
   data:
     redis:
+      timeout: 1s
       host: localhost
       port: 6379
       password: kurs

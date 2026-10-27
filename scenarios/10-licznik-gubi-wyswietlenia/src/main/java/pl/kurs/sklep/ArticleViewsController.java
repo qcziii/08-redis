@@ -25,9 +25,7 @@ public class ArticleViewsController {
     @PostMapping("/{id}/views")
     public Map<String, Object> registerView(@PathVariable Long id) {
         String key = "views:article:" + id;
-        String current = redis.opsForValue().get(key);
-        long views = current == null ? 0 : Long.parseLong(current);
-        views++;
+        Long views = redis.opsForValue().increment(key);
         auditLog.record("artykuł " + id + " wyświetlony " + views + " raz");
         redis.opsForValue().set(key, String.valueOf(views));
         return Map.of("articleId", id, "views", views);

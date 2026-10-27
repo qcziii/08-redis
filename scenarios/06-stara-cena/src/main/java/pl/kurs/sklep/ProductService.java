@@ -3,6 +3,7 @@ package pl.kurs.sklep;
 import java.math.BigDecimal;
 
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class ProductService {
         return catalog.findById(id);
     }
 
-    @CacheEvict(cacheNames = "product", key = "#id")
+    @CachePut(cacheNames = "products", key = "#id")
     public Product updatePrice(Long id, BigDecimal price) {
         return catalog.updatePrice(id, price);
     }

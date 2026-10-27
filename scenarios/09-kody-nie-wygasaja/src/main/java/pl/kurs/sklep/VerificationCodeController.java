@@ -4,7 +4,10 @@ import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.Map;
 
+import org.springframework.data.redis.connection.RedisStringCommands;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.types.Expiration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,27 +43,61 @@ public class VerificationCodeController {
     }
 
     @PostMapping("/{phone}/verify")
-    public ResponseEntity<Map<String, Object>> verify(@PathVariable String phone, @RequestParam String code) {
+    public ResponseEntity<Map<String, Object>> verify(
+            @PathVariable String phone,
+            @RequestParam String code) {
+
         String key = key(phone);
         String value = redis.opsForValue().get(key);
+
         if (value == null) {
-            return ResponseEntity.status(HttpStatus.GONE).body(Map.of("result", "kod wygasł lub nie istnieje"));
+            return ResponseEntity.status(HttpStatus.GONE)
+                    .body(Map.of("result", "kod wygasł lub nie istnieje"));
         }
+
         String[] parts = value.split(":");
         String expected = parts[0];
         int failedAttempts = Integer.parseInt(parts[1]);
 
         if (expected.equals(code)) {
             redis.delete(key);
-            return ResponseEntity.ok(Map.of("result", "zalogowano"));
+
+            return ResponseEntity.ok(
+                    Map.of("result", "zalogowano")
+            );
         }
+
         failedAttempts++;
+
         if (failedAttempts >= MAX_ATTEMPTS) {
             redis.delete(key);
-            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(Map.of("result", "za dużo prób, wygeneruj nowy kod"));
+
+            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                    .body(Map.of(
+                            "result", "za dużo prób, wygeneruj nowy kod"
+                    ));
         }
-        redis.opsForValue().set(key, expected + ":" + failedAttempts);
-        return ResponseEntity.badRequest().body(Map.of("result", "zły kod", "attemptsLeft", MAX_ATTEMPTS - failedAttempts));
+
+        String updatedValue = expected + ":" + failedAttempts;
+
+        redis.execute((RedisCallback<Boolean>) connection -> {
+            byte[] redisKey = redis.getStringSerializer().serialize(key);
+            byte[] redisValue = redis.getStringSerializer()
+                    .serialize(updatedValue);
+
+            return connection.stringCommands().set(
+                    redisKey,
+                    redisValue,
+                    Expiration.keepTtl(),
+                    RedisStringCommands.SetOption.UPSERT
+            );
+        });
+
+        return ResponseEntity.badRequest()
+                .body(Map.of(
+                        "result", "zły kod",
+                        "attemptsLeft", MAX_ATTEMPTS - failedAttempts
+                ));
     }
 
     private static String key(String phone) {

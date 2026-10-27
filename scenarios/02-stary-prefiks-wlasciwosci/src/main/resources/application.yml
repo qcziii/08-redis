@@ -1,11 +1,11 @@
 spring:
   application:
     name: sklep
-  redis:
-    host: localhost
-    port: 6379
-    password: kurs
-    timeout: 2s
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: kurs
   cache:
     type: redis
 management:

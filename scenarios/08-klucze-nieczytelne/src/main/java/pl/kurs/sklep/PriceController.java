@@ -3,6 +3,8 @@ package pl.kurs.sklep;
 import java.util.Map;
 
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,9 +22,9 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/api/prices")
 public class PriceController {
 
-    private final RedisTemplate<Object, Object> redisTemplate;
+    private final StringRedisTemplate redisTemplate;
 
-    public PriceController(RedisTemplate<Object, Object> redisTemplate) {
+    public PriceController(StringRedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
@@ -34,7 +36,7 @@ public class PriceController {
 
     @GetMapping("/{productId}")
     public Map<String, Object> getPrice(@PathVariable Long productId) {
-        Object price = redisTemplate.opsForValue().get("price:" + productId);
+        String price = redisTemplate.opsForValue().get("price:" + productId);
         if (price == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Brak ceny produktu " + productId);
         }

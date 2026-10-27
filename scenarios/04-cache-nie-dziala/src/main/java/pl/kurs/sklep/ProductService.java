@@ -17,6 +17,7 @@ public class ProductService {
         return catalog.findById(id);
     }
 
+    @Cacheable("details")
     public ProductDetails getDetails(Long id) {
         Product product = getProduct(id);
         return new ProductDetails(product, product.price().signum() > 0 ? "dostępny" : "niedostępny");

@@ -1,16 +1,17 @@
 package pl.kurs.sklep;
 
-import java.time.Duration;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
+import org.springframework.data.redis.core.Cursor;
+import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.Duration;
+import java.util.Map;
+import java.util.UUID;
 
 /** Sesje zalogowanych klientów: session:{id} = login, wygasają po 30 minutach. */
 @RestController
@@ -33,7 +34,21 @@ public class SessionController {
     /** Wywoływane co minutę przez dashboard działu obsługi klienta. */
     @GetMapping("/active")
     public Map<String, Object> activeSessions() {
-        Set<String> keys = redis.keys("session:*");
-        return Map.of("active", keys.size());
+
+        long count = 0;
+
+        ScanOptions options = ScanOptions.scanOptions()
+                .match("session:*")
+                .count(1000)
+                .build();
+
+        try (Cursor<String> cursor = redis.scan(options)) {
+            while (cursor.hasNext()) {
+                cursor.next();
+                count++;
+            }
+        }
+
+        return Map.of("active", count);
     }
 }

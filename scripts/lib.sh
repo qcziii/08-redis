@@ -18,10 +18,18 @@ bad() { echo "  [FAIL] $1"; FAIL=$((FAIL+1)); }
 rcli() { "$LIB_ROOT/scripts/redis-cli.sh" "$@" | tr -d '\r'; }
 
 # Wykonuje żądanie; ustawia CODE, BODY i MS (czas w milisekundach). Argumenty jak dla curl.
+
 call() {
   local out
+  local curl_file
   : > "$BODY_FILE"
-  out=$(curl -s -o "$BODY_FILE" -w '%{http_code} %{time_total}' --max-time "${MAX_TIME:-15}" "$@")
+
+  curl_file=$(cygpath -w "$BODY_FILE")
+
+  out=$(curl -s -o "$curl_file" \
+    -w '%{http_code} %{time_total}' \
+    --max-time "${MAX_TIME:-15}" "$@")
+
   CODE=${out% *}
   MS=$(echo "${out#* }" | awk '{printf "%d", $1 * 1000}')
   BODY=$(cat "$BODY_FILE")

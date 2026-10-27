@@ -9,7 +9,7 @@ spring:
   cache:
     type: redis
     redis:
-      time-to-live: 600   # 10 minut
+      time-to-live: 10m   # 10 minut
 management:
   endpoints:
     web:
