@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Startuje Redisa z docker-compose.yml (localhost:6379, hasło "kurs") i czeka, aż odpowie.
+# Starts Redis from docker-compose.yml (localhost:6379, password "kurs") and waits until it answers.
 set -e
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 cd "$ROOT"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Scenariusz 08-klucze-nieczytelne: Wyszukiwarka nie widzi cen zapisanych przez sklep
-# Uruchom: najpierw scripts/start-redis.sh, potem aplikację z tego katalogu (mvn spring-boot:run), potem ./check.sh
+# Check for scenario 08-klucze-nieczytelne (the description is printed below)
+# Run: first scripts/start-redis.sh, then the application from this directory (mvn spring-boot:run), then ./check.sh
 source "$(dirname "$0")/../../scripts/lib.sh"
 echo "Scenariusz 08-klucze-nieczytelne: Wyszukiwarka nie widzi cen zapisanych przez sklep"
 require_redis

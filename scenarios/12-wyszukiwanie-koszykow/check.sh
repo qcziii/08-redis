@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Scenariusz 12-wyszukiwanie-koszykow: Wyszukiwanie koszyków użytkownika zwraca pustą listę
-# Uruchom: najpierw scripts/start-redis.sh, potem aplikację z tego katalogu (mvn spring-boot:run), potem ./check.sh
+# Check for scenario 12-wyszukiwanie-koszykow (the description is printed below)
+# Run: first scripts/start-redis.sh, then the application from this directory (mvn spring-boot:run), then ./check.sh
 source "$(dirname "$0")/../../scripts/lib.sh"
 echo "Scenariusz 12-wyszukiwanie-koszykow: Wyszukiwanie koszyków użytkownika zwraca pustą listę"
 require_redis

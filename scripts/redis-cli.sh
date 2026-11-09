@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# redis-cli uruchamiany w kontenerze, z hasłem. Przykłady:
-#   ./scripts/redis-cli.sh                  # tryb interaktywny
-#   ./scripts/redis-cli.sh KEYS '*'         # pojedyncza komenda (gwiazdkę bierz w apostrofy!)
-#   ./scripts/redis-cli.sh MONITOR          # podgląd wszystkich komend na żywo (Ctrl+C kończy)
-# Git Bash na Windows: nie zamieniaj argumentów zaczynających się od / na ścieżki C:/Program Files/Git/...
+# redis-cli run in the container, with the password. Examples:
+#   ./scripts/redis-cli.sh                  # interactive mode
+#   ./scripts/redis-cli.sh KEYS '*'         # single command (put the asterisk in single quotes!)
+#   ./scripts/redis-cli.sh MONITOR          # live view of all commands (Ctrl+C stops it)
+# Git Bash on Windows: do not turn arguments starting with / into paths C:/Program Files/Git/...
 export MSYS_NO_PATHCONV=1
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 cd "$ROOT" || exit 1
 if [ $# -eq 0 ] && [ -t 0 ]; then
-  # Tryb interaktywny potrzebuje terminala. Starszy Git Bash (mintty) wymaga do tego winpty.
+  # Interactive mode needs a terminal. Older Git Bash (mintty) needs winpty for that.
   case "$(uname -s)" in
     MINGW*|MSYS*) command -v winpty >/dev/null && exec winpty docker compose exec redis redis-cli -a kurs --no-auth-warning ;;
   esac

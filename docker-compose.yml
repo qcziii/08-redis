@@ -1,5 +1,5 @@
-# Redis do ćwiczeń: localhost:6379, hasło "kurs".
-# Start: docker compose up -d   (albo ./scripts/start-redis.sh)
+# Redis for the exercises: localhost:6379, password "kurs".
+# Start: docker compose up -d   (or ./scripts/start-redis.sh)
 name: kurs-redis
 services:
   redis:

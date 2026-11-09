@@ -10,7 +10,7 @@
         <relativePath/>
     </parent>
     <groupId>pl.kurs</groupId>
-    <artifactId>sklep-12</artifactId>
+    <artifactId>shop-12</artifactId>
     <version>1.0.0</version>
     <properties>
         <java.version>21</java.version>

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Scenariusz 02-stary-prefiks-wlasciwosci: Po migracji Spring Boota każde żądanie zwraca 500
-# Uruchom: najpierw scripts/start-redis.sh, potem aplikację z tego katalogu (mvn spring-boot:run), potem ./check.sh
+# Check for scenario 02-stary-prefiks-wlasciwosci (the description is printed below)
+# Run: first scripts/start-redis.sh, then the application from this directory (mvn spring-boot:run), then ./check.sh
 source "$(dirname "$0")/../../scripts/lib.sh"
 echo "Scenariusz 02-stary-prefiks-wlasciwosci: Po migracji Spring Boota każde żądanie zwraca 500"
 require_redis

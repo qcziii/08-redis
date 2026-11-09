@@ -1,2 +1,2 @@
-# Skrypty muszą mieć końce linii LF, także po sklonowaniu na Windows (Git Bash)
+# Scripts must have LF line endings, also when cloned on Windows (Git Bash)
 *.sh text eol=lf

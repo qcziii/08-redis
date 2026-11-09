@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Wspólne funkcje dla skryptów check.sh w scenariuszach.
-# Wymagają bash, curl i dockera (redis-cli działa w kontenerze).
+# Shared functions for the check.sh scripts in the scenarios.
+# They need bash, curl and docker (redis-cli runs in the container).
 
-# Git Bash na Windows: nie zamieniaj argumentów zaczynających się od / na ścieżki Windows
+# Git Bash on Windows: do not turn arguments starting with / into Windows paths
 export MSYS_NO_PATHCONV=1
 APP=${APP:-http://localhost:8080}
 LIB_ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
@@ -14,10 +14,10 @@ trap 'rm -f "$BODY_FILE"' EXIT
 ok()  { echo "  [OK]   $1"; PASS=$((PASS+1)); }
 bad() { echo "  [FAIL] $1"; FAIL=$((FAIL+1)); }
 
-# Komenda redis-cli w kontenerze; wynik bez znaków \r.
+# redis-cli command in the container; output without \r characters.
 rcli() { "$LIB_ROOT/scripts/redis-cli.sh" "$@" | tr -d '\r'; }
 
-# Wykonuje żądanie; ustawia CODE, BODY i MS (czas w milisekundach). Argumenty jak dla curl.
+# Sends a request; sets CODE, BODY and MS (time in milliseconds). Arguments as for curl.
 call() {
   local out
   : > "$BODY_FILE"
@@ -41,17 +41,17 @@ require_app() {
   fi
 }
 
-# Czyści Redisa, żeby każde uruchomienie check.sh zaczynało od zera.
+# Flushes Redis so that every check.sh run starts from scratch.
 reset_redis() { rcli FLUSHALL > /dev/null; }
 
-# expect_status "opis" 200 <argumenty curl>
+# expect_status "description" 200 <curl arguments>
 expect_status() {
   local desc=$1 expected=$2; shift 2
   call "$@"
   if [ "$CODE" = "$expected" ]; then ok "$desc (HTTP $CODE)"; else bad "$desc: oczekiwano HTTP $expected, jest HTTP $CODE. Body: ${BODY:0:300}"; fi
 }
 
-# expect_body "opis" 'fragment' <argumenty curl>  (sprawdza też, że HTTP 2xx)
+# expect_body "description" 'fragment' <curl arguments>  (also checks for HTTP 2xx)
 expect_body() {
   local desc=$1 fragment=$2; shift 2
   call "$@"
@@ -62,7 +62,7 @@ expect_body() {
   fi
 }
 
-# expect_fast "opis" 400 <argumenty curl>  (HTTP 2xx w czasie poniżej podanej liczby ms)
+# expect_fast "description" 400 <curl arguments>  (HTTP 2xx in less than the given number of ms)
 expect_fast() {
   local desc=$1 limit=$2; shift 2
   call "$@"
@@ -73,7 +73,7 @@ expect_fast() {
   fi
 }
 
-# expect_redis "opis" 'oczekiwany wynik' <komenda redis-cli>
+# expect_redis "description" 'expected output' <redis-cli command>
 expect_redis() {
   local desc=$1 expected=$2; shift 2
   local actual
@@ -81,7 +81,7 @@ expect_redis() {
   if [ "$actual" = "$expected" ]; then ok "$desc"; else bad "$desc: redis-cli $* zwraca '${actual:0:200}', oczekiwano '$expected'"; fi
 }
 
-# expect_ttl_between "opis" min max klucz  (TTL klucza w sekundach w przedziale [min, max])
+# expect_ttl_between "description" min max key  (key TTL in seconds within [min, max])
 expect_ttl_between() {
   local desc=$1 min=$2 max=$3 key=$4
   local ttl
@@ -93,8 +93,8 @@ expect_ttl_between() {
   fi
 }
 
-# Symulacja zawieszonego Redisa: proces działa, połączenia są otwarte, ale nic nie odpowiada.
-# Redis zostaje wznowiony także wtedy, gdy check.sh zostanie przerwany (Ctrl+C).
+# Simulates a hung Redis: the process is running, connections are open, but nothing answers.
+# Redis is resumed even when check.sh is interrupted (Ctrl+C).
 pause_redis() {
   (cd "$LIB_ROOT" && docker compose pause redis > /dev/null 2>&1) || echo "  (nie udało się wstrzymać Redisa: docker compose pause redis)"
   trap 'rm -f "$BODY_FILE"; (cd "$LIB_ROOT" && docker compose unpause redis > /dev/null 2>&1)' EXIT

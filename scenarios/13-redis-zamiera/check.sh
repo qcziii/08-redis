@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Scenariusz 13-redis-zamiera: Redis na produkcji regularnie zamiera
-# Uruchom: najpierw scripts/start-redis.sh, potem aplikację z tego katalogu (mvn spring-boot:run), potem ./check.sh
+# Check for scenario 13-redis-zamiera (the description is printed below)
+# Run: first scripts/start-redis.sh, then the application from this directory (mvn spring-boot:run), then ./check.sh
 source "$(dirname "$0")/../../scripts/lib.sh"
 echo "Scenariusz 13-redis-zamiera: Redis na produkcji regularnie zamiera"
 require_redis

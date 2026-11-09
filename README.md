@@ -47,7 +47,7 @@ Przeczytaj `ZADANIE.md` w katalogu scenariusza, odtwórz problem curlem, znajdź
 
 **redis-cli** (działa w kontenerze, hasło jest już podane):
 ```bash
-./scripts/redis-cli.sh                    # tryb interaktywny
+./scripts/redis-cli.sh                    # interactive mode
 ./scripts/redis-cli.sh KEYS '*'           # jakie klucze są w Redisie
 ./scripts/redis-cli.sh GET products::1    # wartość klucza
 ./scripts/redis-cli.sh TTL products::1    # ile sekund zostało do wygaśnięcia (-1: nigdy, -2: brak klucza)

@@ -1,7 +1,7 @@
-# Materiały prowadzącego: rozwiązania, patche, przewodnik. Nie publikować!
+# Instructor materials: solutions, patches, guide. Do not publish!
 rozwiazania/
 
-# Build i logi
+# Build and logs
 target/
 logs/
 

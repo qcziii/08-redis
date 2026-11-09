@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Scenariusz 11-powiadomienia-pubsub: Powiadomienia o zamówieniach nie dochodzą
-# Uruchom: najpierw scripts/start-redis.sh, potem aplikację z tego katalogu (mvn spring-boot:run), potem ./check.sh
+# Check for scenario 11-powiadomienia-pubsub (the description is printed below)
+# Run: first scripts/start-redis.sh, then the application from this directory (mvn spring-boot:run), then ./check.sh
 source "$(dirname "$0")/../../scripts/lib.sh"
 echo "Scenariusz 11-powiadomienia-pubsub: Powiadomienia o zamówieniach nie dochodzą"
 require_redis

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Scenariusz 07-drugie-zadanie-500: Pierwsze żądanie działa, każde kolejne zwraca 500
-# Uruchom: najpierw scripts/start-redis.sh, potem aplikację z tego katalogu (mvn spring-boot:run), potem ./check.sh
+# Check for scenario 07-drugie-zadanie-500 (the description is printed below)
+# Run: first scripts/start-redis.sh, then the application from this directory (mvn spring-boot:run), then ./check.sh
 source "$(dirname "$0")/../../scripts/lib.sh"
 echo "Scenariusz 07-drugie-zadanie-500: Pierwsze żądanie działa, każde kolejne zwraca 500"
 require_redis
