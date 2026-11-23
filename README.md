@@ -66,13 +66,19 @@ Jeśli `./scripts/redis-cli.sh` bez argumentów nie działa w Twoim terminalu, u
 
 ## Port 6379 zajęty
 
-Jeśli `start-redis.sh` zgłasza zajęty port, na komputerze działa już inny Redis (np. zainstalowany lokalnie albo kontener z innego projektu). Zatrzymaj go albo sprawdź `docker ps`. Na Windows w PowerShellu:
+Jeśli `start-redis.sh` zgłasza zajęty port, na komputerze działa już inny Redis (np. zainstalowany lokalnie albo kontener z innego projektu). Najczęściej to `egzamin-redis` z repo egzaminu: skrypt zatrzymuje go sam. Inne kontenery sprawdzisz przez `docker ps` i zatrzymasz przez `docker stop <nazwa>`. Na Windows w PowerShellu:
 
 ```powershell
 Get-NetTCPConnection -LocalPort 6379,8080 -State Listen | Select-Object LocalPort, OwningProcess, @{n='Name';e={(Get-Process -Id $_.OwningProcess).ProcessName}}
 ```
 
+Jeśli Docker zgłasza `forbidden by its access permissions`, Windows zarezerwował port 6379 (Hyper-V/WSL). Sprawdzisz to w PowerShellu: `netsh interface ipv4 show excludedportrange protocol=tcp`. Zwykle pomaga restart komputera albo `net stop winnat` i `net start winnat` w PowerShellu uruchomionym jako administrator.
+
 Jeśli port 8080 jest zajęty, zwykle działa jeszcze aplikacja z poprzedniego scenariusza. Zatrzymaj ją (Ctrl+C w jej terminalu).
+
+## "Possible SECURITY ATTACK detected" w logach Redisa
+
+Redis wypisuje ten komunikat, gdy na jego port przyjdzie żądanie HTTP, np. gdy otworzysz `http://localhost:6379` w przeglądarce albo klikniesz port `6379:6379` przy kontenerze w Docker Desktop. Redis zrywa wtedy tylko to jedno połączenie i działa dalej. To nie jest przyczyna problemu: Redisa sprawdzaj przez `./scripts/redis-cli.sh PING` (ma odpowiedzieć `PONG`), nie przez przeglądarkę.
 
 ## Scenariusze
 

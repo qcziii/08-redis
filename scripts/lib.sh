@@ -2,8 +2,8 @@
 # Shared functions for the check.sh scripts in the scenarios.
 # They need bash, curl and docker (redis-cli runs in the container).
 
-# Git Bash on Windows: do not turn arguments starting with / into Windows paths
-export MSYS_NO_PATHCONV=1
+# No global MSYS_NO_PATHCONV here: Git Bash must keep converting paths such as the
+# mktemp file (/tmp/...) and /dev/null for curl.exe. redis-cli.sh sets it only for docker.
 APP=${APP:-http://localhost:8080}
 LIB_ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 PASS=0
